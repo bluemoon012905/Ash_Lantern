@@ -1,0 +1,85 @@
+[gd_scene load_steps=9 format=3 uid="uid://dgbkbq5mkvgh1"]
+
+[ext_resource type="PackedScene" uid="uid://bua34r48fjs2c" path="res://scenes/player.tscn" id="1_2t77n"]
+[ext_resource type="Texture2D" uid="uid://d7vukxr0q2ex" path="res://assets/topdown_floor.svg" id="2_4i362"]
+[ext_resource type="Script" uid="uid://dy3u40xbsem0t" path="res://scripts/main.gd" id="3_shgr7"]
+[ext_resource type="Script" uid="uid://b4ybk460ehhfa" path="res://scripts/action_queue_display.gd" id="4_mx3ky"]
+[ext_resource type="Script" uid="uid://kgo6b5la421h" path="res://scripts/comic_callout.gd" id="5_i4vd0"]
+[ext_resource type="FontFile" uid="uid://qmhckicplo7f" path="res://assets/fonts/NotoSansSC-Bold.otf" id="6_mb2b4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_top_bottom"]
+size = Vector2(1100, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_left_right"]
+size = Vector2(60, 800)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("3_shgr7")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_left = -512.0
+offset_top = -512.0
+offset_right = 512.0
+offset_bottom = 512.0
+
+[node name="Floor" type="Sprite2D" parent="."]
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_4i362")
+
+[node name="Player" parent="." instance=ExtResource("1_2t77n")]
+
+[node name="Boundary" type="StaticBody2D" parent="."]
+
+[node name="TopWall" type="CollisionShape2D" parent="Boundary"]
+position = Vector2(0, -360)
+shape = SubResource("RectangleShape2D_top_bottom")
+
+[node name="BottomWall" type="CollisionShape2D" parent="Boundary"]
+position = Vector2(0, 360)
+shape = SubResource("RectangleShape2D_top_bottom")
+
+[node name="LeftWall" type="CollisionShape2D" parent="Boundary"]
+position = Vector2(-360, 0)
+shape = SubResource("RectangleShape2D_left_right")
+
+[node name="RightWall" type="CollisionShape2D" parent="Boundary"]
+position = Vector2(360, 0)
+shape = SubResource("RectangleShape2D_left_right")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="QueuePanel" type="PanelContainer" parent="UI"]
+offset_left = 49.0
+offset_top = 147.0
+offset_right = 269.0
+offset_bottom = 267.0
+script = ExtResource("4_mx3ky")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/QueuePanel"]
+layout_mode = 2
+
+[node name="CurrentActionLabel" type="Label" parent="UI/QueuePanel/VBoxContainer"]
+layout_mode = 2
+text = "当前: -"
+
+[node name="QueueLabel" type="Label" parent="UI/QueuePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "队列: (空)"
+
+[node name="CalloutLabel" type="Label" parent="UI"]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.05
+anchor_right = 0.5
+anchor_bottom = 0.05
+offset_left = -80.0
+offset_right = 80.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0.94902, 0.819608, 0.4, 1)
+theme_override_colors/font_outline_color = Color(0.192157, 0.0823529, 0.0823529, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("6_mb2b4")
+theme_override_font_sizes/font_size = 72
+horizontal_alignment = 1
+script = ExtResource("5_i4vd0")
