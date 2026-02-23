@@ -43,3 +43,9 @@ v.0.2.0
 - Converted the player to a `CharacterBody3D` capsule with a camera boom so movement, input mapping, hat styling, and sword mounting still work.
 - Reauthored the sword scene as a 3D Node with interpolated poses; the queue/pose logic is unchanged but now moves the sword mesh through 3D offsets.
 - Preserved all combat queueing, Chinese callouts, and controller scripts so the move set feels identical despite the new perspective.
+
+v.0.3.0
+
+- Mouse input now captures the camera, letting you orbit the player with FPS-style aim controls while the capsule and sword rotate to face that heading.
+- Scroll wheel smoothly blends the boom offset/FOV from a wide third-person framing into a true first-person view sitting at head height.
+- Added helpers for toggling the mouse cursor with `Esc`/left click so testing in the editor stays comfortable.
