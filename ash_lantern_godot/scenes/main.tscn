@@ -1,59 +1,80 @@
-[gd_scene load_steps=9 format=3 uid="uid://dgbkbq5mkvgh1"]
+[gd_scene load_steps=11 format=3 uid="uid://dgbkbq5mkvgh1"]
 
 [ext_resource type="PackedScene" uid="uid://bua34r48fjs2c" path="res://scenes/player.tscn" id="1_2t77n"]
-[ext_resource type="Texture2D" uid="uid://d7vukxr0q2ex" path="res://assets/topdown_floor.svg" id="2_4i362"]
-[ext_resource type="Script" uid="uid://dy3u40xbsem0t" path="res://scripts/main.gd" id="3_shgr7"]
-[ext_resource type="Script" uid="uid://b4ybk460ehhfa" path="res://scripts/action_queue_display.gd" id="4_mx3ky"]
-[ext_resource type="Script" uid="uid://kgo6b5la421h" path="res://scripts/comic_callout.gd" id="5_i4vd0"]
-[ext_resource type="FontFile" uid="uid://qmhckicplo7f" path="res://assets/fonts/NotoSansSC-Bold.otf" id="6_mb2b4"]
+[ext_resource type="Script" uid="uid://dy3u40xbsem0t" path="res://scripts/main.gd" id="2_3fap6"]
+[ext_resource type="Script" uid="uid://b4ybk460ehhfa" path="res://scripts/action_queue_display.gd" id="3_6na7u"]
+[ext_resource type="Script" uid="uid://kgo6b5la421h" path="res://scripts/comic_callout.gd" id="4_zmnvx"]
+[ext_resource type="FontFile" uid="uid://qmhckicplo7f" path="res://assets/fonts/NotoSansSC-Bold.otf" id="5_kdweu"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_top_bottom"]
-size = Vector2(1100, 60)
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(15, 0.25, 15)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_left_right"]
-size = Vector2(60, 800)
+[sub_resource type="PlaneMesh" id="PlaneMesh_floor"]
+size = Vector2(30, 30)
 
-[node name="Main" type="Node2D"]
-script = ExtResource("3_shgr7")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+albedo_color = Color(0.170588, 0.207843, 0.247059, 1)
+roughness = 0.9
 
-[node name="Background" type="ColorRect" parent="."]
-offset_left = -512.0
-offset_top = -512.0
-offset_right = 512.0
-offset_bottom = 512.0
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_long"]
+size = Vector3(15, 2.5, 0.5)
 
-[node name="Floor" type="Sprite2D" parent="."]
-scale = Vector2(0.7, 0.7)
-texture = ExtResource("2_4i362")
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_short"]
+size = Vector3(0.5, 2.5, 15)
+
+[node name="Main" type="Node3D"]
+script = ExtResource("2_3fap6")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.819152, -0.469846, 0.32899, 0, 0.573576, 0.819152, -0.573576, -0.67101, 0.469846, 0, 0, 0)
+light_energy = 2.0
+
+[node name="ArenaFloor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ArenaFloor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.125, 0)
+shape = SubResource("BoxShape3D_floor")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ArenaFloor"]
+mesh = SubResource("PlaneMesh_floor")
+surface_material_override/0 = SubResource("StandardMaterial3D_floor")
+
+[node name="Walls" type="Node3D" parent="."]
+
+[node name="NorthWall" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -15)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/NorthWall"]
+shape = SubResource("BoxShape3D_wall_long")
+
+[node name="SouthWall" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 15)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/SouthWall"]
+shape = SubResource("BoxShape3D_wall_long")
+
+[node name="WestWall" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WestWall"]
+shape = SubResource("BoxShape3D_wall_short")
+
+[node name="EastWall" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/EastWall"]
+shape = SubResource("BoxShape3D_wall_short")
 
 [node name="Player" parent="." instance=ExtResource("1_2t77n")]
-
-[node name="Boundary" type="StaticBody2D" parent="."]
-
-[node name="TopWall" type="CollisionShape2D" parent="Boundary"]
-position = Vector2(0, -360)
-shape = SubResource("RectangleShape2D_top_bottom")
-
-[node name="BottomWall" type="CollisionShape2D" parent="Boundary"]
-position = Vector2(0, 360)
-shape = SubResource("RectangleShape2D_top_bottom")
-
-[node name="LeftWall" type="CollisionShape2D" parent="Boundary"]
-position = Vector2(-360, 0)
-shape = SubResource("RectangleShape2D_left_right")
-
-[node name="RightWall" type="CollisionShape2D" parent="Boundary"]
-position = Vector2(360, 0)
-shape = SubResource("RectangleShape2D_left_right")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="QueuePanel" type="PanelContainer" parent="UI"]
-offset_left = 49.0
-offset_top = 147.0
-offset_right = 269.0
-offset_bottom = 267.0
-script = ExtResource("4_mx3ky")
+offset_left = 40.0
+offset_top = 120.0
+offset_right = 260.0
+offset_bottom = 240.0
+script = ExtResource("3_6na7u")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/QueuePanel"]
 layout_mode = 2
@@ -61,11 +82,13 @@ layout_mode = 2
 [node name="CurrentActionLabel" type="Label" parent="UI/QueuePanel/VBoxContainer"]
 layout_mode = 2
 text = "当前: -"
+theme_override_fonts/font = ExtResource("5_kdweu")
 
 [node name="QueueLabel" type="Label" parent="UI/QueuePanel/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "队列: (空)"
+theme_override_fonts/font = ExtResource("5_kdweu")
 
 [node name="CalloutLabel" type="Label" parent="UI"]
 anchors_preset = -1
@@ -79,7 +102,7 @@ offset_bottom = 50.0
 theme_override_colors/font_color = Color(0.94902, 0.819608, 0.4, 1)
 theme_override_colors/font_outline_color = Color(0.192157, 0.0823529, 0.0823529, 1)
 theme_override_constants/outline_size = 4
-theme_override_fonts/font = ExtResource("6_mb2b4")
+theme_override_fonts/font = ExtResource("5_kdweu")
 theme_override_font_sizes/font_size = 72
 horizontal_alignment = 1
-script = ExtResource("5_i4vd0")
+script = ExtResource("4_zmnvx")

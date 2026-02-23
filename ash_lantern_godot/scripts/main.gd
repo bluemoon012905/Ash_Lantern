@@ -1,4 +1,4 @@
-extends Node2D
+extends Node3D
 
 @onready var _player := $Player
 @onready var _queue_panel := $UI/QueuePanel

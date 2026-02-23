@@ -1,6 +1,6 @@
-extends CharacterBody2D
+extends CharacterBody3D
 
-const SPEED := 220.0
+const SPEED := 6.0
 const INPUT_THRESHOLD := 0.15
 
 const ATTACK_INPUTS := {
@@ -15,26 +15,28 @@ const ATTACK_INPUTS := {
 
 func _physics_process(_delta: float) -> void:
 	var move_vector := _get_move_vector()
-	velocity = move_vector * SPEED
+	velocity.x = move_vector.x * SPEED
+	velocity.z = move_vector.z * SPEED
+	velocity.y = 0.0
 	move_and_slide()
 
 	if _sword:
 		_sword.update_move_direction(move_vector)
 		_handle_attack_inputs()
 
-func _get_move_vector() -> Vector2:
-	var dir := Vector2.ZERO
+func _get_move_vector() -> Vector3:
+	var dir := Vector3.ZERO
 	if Input.is_physical_key_pressed(KEY_LEFT) or Input.is_physical_key_pressed(KEY_A):
 		dir.x -= 1.0
 	if Input.is_physical_key_pressed(KEY_RIGHT) or Input.is_physical_key_pressed(KEY_D):
 		dir.x += 1.0
 	if Input.is_physical_key_pressed(KEY_UP) or Input.is_physical_key_pressed(KEY_W):
-		dir.y -= 1.0
+		dir.z -= 1.0
 	if Input.is_physical_key_pressed(KEY_DOWN) or Input.is_physical_key_pressed(KEY_S):
-		dir.y += 1.0
+		dir.z += 1.0
 
 	if dir.length() < INPUT_THRESHOLD:
-		return Vector2.ZERO
+		return Vector3.ZERO
 
 	return dir.normalized()
 

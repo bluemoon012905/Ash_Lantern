@@ -36,3 +36,10 @@ Implementation (completed):
 - Queued inputs using the new UI panel so players can mash commands and see what is pending.
 - Each move now plays a stylized Chinese callout (Noto Sans SC) in a comic splash when it resolves.
 - The sword enforces start/end stances, transitions through those poses over time, and drifts back to its basic held position after an idle delay.
+
+v.0.2.0
+
+- Rebuilt the arena as a simple 3D space with a lit floor plane, wall colliders, and the same UI layered above it.
+- Converted the player to a `CharacterBody3D` capsule with a camera boom so movement, input mapping, hat styling, and sword mounting still work.
+- Reauthored the sword scene as a 3D Node with interpolated poses; the queue/pose logic is unchanged but now moves the sword mesh through 3D offsets.
+- Preserved all combat queueing, Chinese callouts, and controller scripts so the move set feels identical despite the new perspective.

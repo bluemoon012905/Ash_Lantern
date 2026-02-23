@@ -11,5 +11,13 @@ func set_queue(queue: PackedStringArray) -> void:
 	if queue.is_empty():
 		_queue_label.text = "队列: (空)"
 	else:
-		var queue_text := queue.join(" ")
+		var queue_text: String = _join_labels(queue, " ")
 		_queue_label.text = "队列: %s" % queue_text
+
+func _join_labels(values: PackedStringArray, separator: String) -> String:
+	var builder := ""
+	for i in range(values.size()):
+		builder += values[i]
+		if i < values.size() - 1:
+			builder += separator
+	return builder

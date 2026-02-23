@@ -6,6 +6,7 @@
 - **v0.0.1** – Introduced a separate sword scene that stays attached to the player’s motion, ready for future combat.
 - **v0.0.2** – Added a jaunty hat to clarify facing direction and pulled the sword in closer for readability.
 - **v0.1.0** – Implemented the first combat pass: the sword now understands the five core moves (`劈`, `点`, `撩`, `挂`, `崩`), enforces their starting/ending poses, runs them through a visible queue, flashes comic-style Chinese callouts with a stylized font when a move lands, tracks a placeholder damage value of 1 per action, and snaps back to a neutral guard after a short idle.
+- **v0.2.0** – Ported the prototype to 3D: the arena, player, and sword now live in a 3D space with a capsule body, jaunty hat, boxy sword mesh, 3D camera, and collisions that mirror the old 2D boundaries while keeping all queue/callout systems intact.
 
 ### Controls
 
