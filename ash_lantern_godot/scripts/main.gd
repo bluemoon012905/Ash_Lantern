@@ -5,7 +5,10 @@ extends Node3D
 @onready var _callout_label := $UI/CalloutLabel
 
 func _ready() -> void:
-	var sword: Node = _player.get_node_or_null("Sword")
+	if not _player:
+		push_warning("Player node not found; UI will not update sword actions.")
+		return
+	var sword: Node = _player.get_node_or_null("ArmRight/SwordAnchor/Sword")
 	if sword:
 		sword.queue_updated.connect(_queue_panel.set_queue)
 		sword.action_started.connect(_on_action_started)

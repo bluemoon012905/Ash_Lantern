@@ -17,7 +17,7 @@ const ATTACK_INPUTS := {
 	"attack_beng": "beng"
 }
 
-@onready var _sword := $Sword
+@onready var _sword := $"ArmRight/SwordAnchor/Sword"
 @onready var _camera_pivot: Node3D = $CameraRig/Pivot
 @onready var _camera: Camera3D = $CameraRig/Pivot/Camera3D
 @onready var _third_person_anchor: Node3D = $CameraRig/Pivot/ThirdPersonAnchor

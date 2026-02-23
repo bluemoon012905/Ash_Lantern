@@ -19,3 +19,10 @@
 
 1. Open the `ash_lantern_godot` folder with Godot 4.4.
 2. Play the project (the default scene is already configured to `scenes/main.tscn`).
+
+### Web Build / GitHub Pages
+
+- The repo now ships with a Web export preset (`ash_lantern_godot/export_presets.cfg`) and a workflow at `.github/workflows/deploy-web.yml`.
+- On every push to `main`, GitHub Actions installs Godot 4.4.1, exports `ash_lantern_godot` to `build/web`, and publishes it to the `gh-pages` branch using `peaceiris/actions-gh-pages`.
+- After the first successful run, enable GitHub Pages in the repo settings and point it to the `gh-pages` branch (root). Your playable HTML5 build will then be served automatically.
+- To test locally, run `godot --headless --export-release "Web" ../build/web/index.html` from the `ash_lantern_godot` directory and open `build/web/index.html` with any static server.
